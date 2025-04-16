@@ -1,0 +1,26 @@
+# Binaries
+jira-mcp-server
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output directories
+/bin/
+/out/
+/dist/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Go workspace file
+go.work
+
+# Dependency directories
+vendor/
+# Optional: If not committing packages, otherwise can be removed
+/pkg/

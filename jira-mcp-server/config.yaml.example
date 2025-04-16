@@ -1,0 +1,7 @@
+# Optional configuration file for jira-mcp-server
+# Environment variables (e.g., JIRA_MCP_PORT) take precedence.
+
+# port: 8080
+# jira_url: "https://your-domain.atlassian.net"
+# api_token: "your-api-token" # Consider security implications of storing secrets in files
+# user_email: "your-email@example.com"

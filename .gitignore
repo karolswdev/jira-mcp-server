@@ -1,0 +1,9 @@
+# Build script
+build.sh
+
+
+# Memory Bank directory (contains potentially sensitive context)
+/memory-bank/
+
+# Build output
+jira-mcp-server-app

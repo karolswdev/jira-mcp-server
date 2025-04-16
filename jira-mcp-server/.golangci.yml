@@ -1,0 +1,18 @@
+run:
+  timeout: 5m
+linters-settings:
+  # Example settings if needed
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - goimports
+    - gofmt
+    # Add others if desired, e.g., 'ineffassign', 'typecheck'
+  disable-all: false
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0

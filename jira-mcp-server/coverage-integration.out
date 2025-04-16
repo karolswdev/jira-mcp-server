@@ -1,0 +1,12 @@
+mode: set
+jira-mcp-server/cmd/main.go:15.13,33.45 10 0
+jira-mcp-server/cmd/main.go:33.45,34.55 1 0
+jira-mcp-server/cmd/main.go:34.55,36.4 1 0
+jira-mcp-server/cmd/main.go:36.9,40.4 2 0
+jira-mcp-server/cmd/main.go:43.2,48.35 4 0
+jira-mcp-server/cmd/main.go:48.35,50.33 1 0
+jira-mcp-server/cmd/main.go:50.33,55.4 3 0
+jira-mcp-server/cmd/main.go:60.2,61.16 2 0
+jira-mcp-server/cmd/main.go:61.16,64.3 2 0
+jira-mcp-server/cmd/main.go:67.2,83.16 11 0
+jira-mcp-server/cmd/main.go:83.16,86.3 2 0

@@ -1,0 +1,22 @@
+# Git files
+.git
+.gitignore
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+LICENSE
+
+# Local binaries
+/server
+
+# IDE files
+.idea
+.vscode
+
+# Go files
+bin/
+pkg/
