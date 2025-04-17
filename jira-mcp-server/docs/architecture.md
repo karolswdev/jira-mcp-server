@@ -124,7 +124,7 @@ Coverage reports can be generated separately for unit (`make coverage`) and inte
 
 ## Configuration
 
-Configuration is managed via Viper, primarily using environment variables prefixed with `JIRA_MCP_` or a `config.yaml` file. See the main `README.md` for full details. Key variables include:
+Configuration is managed via Viper, primarily using environment variables prefixed with `JIRA_MCP_` or a `config.yaml` file. See the main [`README.md`](../../README.md) for full details. Key variables include:
 
 *   `JIRA_MCP_JIRA_URL`: The base URL of the JIRA Cloud instance.
 *   `JIRA_MCP_JIRA_USER_EMAIL`: The email address associated with the API token.

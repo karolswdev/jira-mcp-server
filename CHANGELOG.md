@@ -1,13 +1,27 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Added missing relative links between documentation files (`README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `API_EXAMPLES.md`, `docs/architecture.md`) to improve navigation.
+
 
 ### Changed
 - Moved `README.md` from `jira-mcp-server/` to project root.
 - Updated `README.md` command examples and paths to reflect the move.
 
+- Updated `.github/workflows/ci.yml` to correctly position and configure the Codecov coverage upload step after unit tests.
+
+- Overhauled root `README.md` for clarity, structure, and tone according to `POLISH_PLAN.md` Phase 6.1.
+- Extracted detailed API examples into `API_EXAMPLES.md` and linked from `README.md`.
+
 ### Added
 - Added `/memory-bank/` to root `.gitignore`.
+- Added `.roomodes`, `repomix-output.txt`, `TODO.md`, and `ROOT_CLEANUP_PLAN.md` to root `.gitignore`.
+- Added `coverage*.out` to `jira-mcp-server/.gitignore`.
+
+
+### Removed
+- Removed redundant `.github/workflows/go-build.yml` workflow file.
 
 ## [0.1.0] - 2025-04-16
 
@@ -41,6 +55,11 @@
 
 - Added `coverage` and `coverage-integration` targets to `Makefile` for generating and viewing unit and integration test coverage reports. (Corresponds to TODO Phase 2, Task 5).
 
+- Initial project structure for `jira-mcp-server`.
+- Created `jira-mcp-server/Makefile` with standard targets (`build`, `run`, `test`, `lint` placeholder, `fmt`, `docker-build`, `docker-run`) to standardize common development tasks. (Corresponds to TODO Phase 1, Task 2).
+- Added `jira-mcp-server/.golangci.yml` with default linters (`govet`, `errcheck`, `staticcheck`, `unused`, `goimports`, `gofmt`). (Corresponds to TODO Phase 1, Task 3).
+
+
 
 ### Changed
 - Refactored `cmd/main.go` to use Viper for loading configuration from defaults, environment variables (prefixed with `JIRA_MCP_`), and optional `config.yaml` file. Removed direct `os.Getenv` usage for configuration keys. (Corresponds to TODO Phase 3, Task 3).
@@ -73,6 +92,12 @@
 - Updated `README.md` with `make` commands, accurate configuration/API details, examples, and a new Testing section. (Corresponds to TODO Phase 3, Task 5).
 - Updated `docs/architecture.md` to reflect DI, updated sequence diagram, and added Testing Strategy section. (Corresponds to TODO Phase 3, Task 5).
 - Added GoDoc comments to exported types/functions/methods in `internal/handlers/jira_handlers.go` and `internal/jira/client.go`. (Corresponds to TODO Phase 3, Task 5).
+- Refactored `jira-mcp-server` for testability using dependency injection: Defined `JiraService` interface, updated `jira.Client` methods to accept `context.Context` and use `http.NewRequestWithContext`, modified `JiraHandlers` to accept `JiraService`, and updated `main.go` to inject dependencies. (Corresponds to TODO Phase 2, Task 1).
+- Verified and cleaned up `jira-mcp-server` directory structure according to standard Go layout. Removed extraneous `repomix-output.txt`. Confirmed Go import paths are correct. Ran `go mod tidy`. (Corresponds to TODO Phase 1, Task 1).
+- Updated `jira-mcp-server/Makefile` `lint` target to execute `golangci-lint run ./...`. (Corresponds to TODO Phase 1, Task 3).
+- Reviewed dependencies in `jira-mcp-server/go.mod` and ran `go mod tidy` to ensure consistency and remove unused entries. (Corresponds to TODO Phase 1, Task 4).
+
+
 
 
 
@@ -88,39 +113,14 @@
 - Updated unit tests (`internal/handlers/jira_handlers_test.go`) to mock `*jira.JiraAPIError` and assert correct mapped HTTP status codes and user-friendly error messages.
 - Updated integration tests (`cmd/main_integration_test.go`) to assert correct mapped HTTP status codes and user-friendly error messages for API error scenarios (400, 404, 500).
 - Fixed unit tests in `internal/jira/client_test.go` to correctly assert `*jira.JiraAPIError` type and properties instead of old error string format.
-
-
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Added
-- Initial project structure for `jira-mcp-server`.
-- Created `jira-mcp-server/Makefile` with standard targets (`build`, `run`, `test`, `lint` placeholder, `fmt`, `docker-build`, `docker-run`) to standardize common development tasks. (Corresponds to TODO Phase 1, Task 2).
-- Added `jira-mcp-server/.golangci.yml` with default linters (`govet`, `errcheck`, `staticcheck`, `unused`, `goimports`, `gofmt`). (Corresponds to TODO Phase 1, Task 3).
-
-
-
-### Changed
-- Refactored `jira-mcp-server` for testability using dependency injection: Defined `JiraService` interface, updated `jira.Client` methods to accept `context.Context` and use `http.NewRequestWithContext`, modified `JiraHandlers` to accept `JiraService`, and updated `main.go` to inject dependencies. (Corresponds to TODO Phase 2, Task 1).
-- Verified and cleaned up `jira-mcp-server` directory structure according to standard Go layout. Removed extraneous `repomix-output.txt`. Confirmed Go import paths are correct. Ran `go mod tidy`. (Corresponds to TODO Phase 1, Task 1).
-
-- Updated `jira-mcp-server/Makefile` `lint` target to execute `golangci-lint run ./...`. (Corresponds to TODO Phase 1, Task 3).
-- Reviewed dependencies in `jira-mcp-server/go.mod` and ran `go mod tidy` to ensure consistency and remove unused entries. (Corresponds to TODO Phase 1, Task 4).
-
-### Fixed
 - N/A
-
 - Fixed `errcheck` linting errors in `internal/jira/client.go` and `internal/handlers/jira_handlers.go` reported by `golangci-lint`. (Corresponds to TODO Phase 1, Task 3).
 
-### Removed
-- `jira-mcp-server/repomix-output.txt`
+
+
+
 
 
 <!-- Link Definitions -->
-[Unreleased]: https://github.com/<USER>/<REPO>/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/<USER>/<REPO>/releases/tag/v0.1.0
+[Unreleased]: https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/releases/tag/v0.1.0

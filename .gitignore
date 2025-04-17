@@ -7,3 +7,13 @@ build.sh
 
 # Build output
 jira-mcp-server-app
+
+# Roo specific files
+.roomodes
+
+# Temporary output files
+repomix-output.txt
+
+# Temporary planning files
+TODO.md
+ROOT_CLEANUP_PLAN.md

@@ -1,352 +1,173 @@
-# JIRA MCP Server
+# JIRA MCP Server 🚀
 
-A Go implementation of a Model Context Protocol (MCP) server for interacting with JIRA Cloud REST API.
-[![Go CI](https://github.com/<USER>/<REPO>/actions/workflows/ci.yml/badge.svg)](https://github.com/<USER>/<REPO>/actions/workflows/ci.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/<USER>/<REPO>)](https://goreportcard.com/report/github.com/<USER>/<REPO>) [![codecov](https://codecov.io/gh/<USER>/<REPO>/branch/main/graph/badge.svg?token=<CODECOV_TOKEN>)](https://codecov.io/gh/<USER>/<REPO>) <!-- Replace with actual Codecov setup later --> ![Go Version](https://img.shields.io/badge/go-1.23.x-blue.svg) <!-- Update version if needed -->
+<!-- Badges - TODO: Replace <USER>/<REPO> and add real token/links -->
+[![Go CI](https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/actions/workflows/ci.yml/badge.svg)](https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name])](https://goreportcard.com/report/github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name])
+[![codecov](https://codecov.io/gh/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/branch/main/graph/badge.svg)](https://codecov.io/gh/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]) <!-- Codecov token set via GitHub Secret: CODECOV_TOKEN -->
+![Go Version](https://img.shields.io/badge/go-1.20+-blue.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./jira-mcp-server/LICENSE)
+
+**A flexible Go server implementing the Model Context Protocol (MCP) to interact with the JIRA Cloud REST API, enabling seamless integration between LLMs/tools and your JIRA projects.**
+
+## What is this? 🤔
+
+This project provides a bridge between systems that speak the Model Context Protocol (like certain AI assistants or development tools) and the powerful JIRA Cloud API. It allows you to perform common JIRA actions (creating issues, searching, retrieving details) programmatically through a standardized MCP interface, abstracting away the complexities of direct JIRA API calls.
+
+## ✨ Features
+
+*   **MCP Interface:** Exposes JIRA actions via standard MCP endpoints.
+*   **JIRA Cloud Integration:** Create issues, search using JQL, retrieve issue details, and fetch issues within an Epic.
+*   **Flexible Configuration:** Uses Viper for configuration via environment variables, config files, or defaults.
+*   **Docker Support:** Ready for containerized deployment using Docker and Docker Compose.
+*   **Robust Testing:** Includes comprehensive unit and integration tests.
+*   **Structured Logging:** Uses `slog` for clear, structured logging.
+*   **Dependency Injection:** Built with clean architecture principles using `wire` for dependency injection.
 
 ## Prerequisites
 
-- Go 1.20+ installed (for development)
-- Docker (optional, for containerized deployment)
-- JIRA Cloud account with API access
-- API token for your JIRA account
+*   Go 1.20+ (for building/running locally)
+*   Docker & Docker Compose (optional, for containerized deployment)
+*   A JIRA Cloud instance
+*   A JIRA API Token associated with a user email
 
-## Getting Started
+## 🚀 Getting Started
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd jira-mcp # Or the name of your cloned directory
+    git clone https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name].git # TODO: Replace with actual URL
+    cd [TODO: Replace with GitHub Repo Name] # e.g., cd jira-mcp
     ```
-    **Note:** Most subsequent commands (like `make ...`) should be run from within the `jira-mcp-server` subdirectory.
+2.  **Navigate to the server directory:**
     ```bash
+    cd jira-mcp-server
     ```
-2.  **Configure:** Set the required environment variables (see [Configuration](#configuration) below) or create a `config.yaml`.
-3.  **Build (inside `jira-mcp-server` directory):**
-    ```bash
-    make build
-    ```
-    This compiles the server binary to `jira-mcp-server`.
+    **➡️ Important:** Most subsequent commands (`make ...`, `go run ...`, `docker ...`) should be run from *within* the `jira-mcp-server/` directory.
 
-## Configuration
+3.  **Configure the server:** Set the required environment variables or create a `config.yaml`. See the [Configuration](#⚙️-configuration) section below.
+
+4.  **Run the server:** See the [Running the Server](#▶️-running-the-server) section below.
+
+## ⚙️ Configuration
 
 Configuration is managed using [Viper](https://github.com/spf13/viper) and loaded from the following sources in order of precedence:
 
-1.  **Environment Variables:** Prefixed with `JIRA_MCP_`.
-2.  **Configuration File:** `config.yaml` (or `.json`, `.toml`) in the `jira-mcp-server` directory (optional). See `jira-mcp-server/config.yaml.example`.
-3.  **Defaults:** Default values set within the application.
+1.  **Environment Variables:** Prefixed with `JIRA_MCP_` (e.g., `JIRA_MCP_JIRA_URL`). **Highest precedence.**
+2.  **Configuration File:** `config.yaml` (or `.json`, `.toml`) located within the `jira-mcp-server/` directory. See [`config.yaml.example`](./jira-mcp-server/config.yaml.example) for structure and all options.
+3.  **Defaults:** Default values defined within the application code.
 
 **Required Configuration:**
 
-The following values must be provided either via environment variables (highest precedence) or the configuration file:
+These values *must* be provided via environment variables or the config file:
 
-*   `JIRA_MCP_JIRA_URL`: The base URL of your JIRA Cloud instance (e.g., `https://your-domain.atlassian.net`).
-*   `JIRA_MCP_JIRA_USER_EMAIL`: The email address associated with the API token user.
-*   `JIRA_MCP_JIRA_API_TOKEN`: Your JIRA API token.
+*   `JIRA_MCP_JIRA_URL`: Your JIRA Cloud instance base URL (e.g., `https://your-domain.atlassian.net`).
+*   `JIRA_MCP_JIRA_USER_EMAIL`: The email address of the JIRA user associated with the API token.
+*   `JIRA_MCP_JIRA_API_TOKEN`: Your JIRA API token. **Treat this like a password!**
 
 **Optional Configuration:**
 
-*   `JIRA_MCP_PORT`: The port the server listens on. Defaults to `8080`.
+*   `JIRA_MCP_PORT`: Port for the server to listen on (Default: `8080`).
+*   `JIRA_MCP_LOG_LEVEL`: Logging level (`debug`, `info`, `warn`, `error`) (Default: `info`).
+*   `JIRA_MCP_EPIC_LINK_FIELD_ID`: The custom field ID for the "Epic Link" in your JIRA instance (e.g., `customfield_10014`). **Required** for the `/jira_epic/{epicKey}/issues` endpoint to function correctly. Find this ID via your JIRA API or administration settings.
 
-**Example Environment Variables:**
+**Example (Environment Variables):**
 
 ```bash
 export JIRA_MCP_JIRA_URL="https://your-domain.atlassian.net"
 export JIRA_MCP_JIRA_USER_EMAIL="your.email@example.com"
-export JIRA_MCP_JIRA_API_TOKEN="your-api-token"
-export JIRA_MCP_PORT="8888" # Optional, defaults to 8080
+export JIRA_MCP_JIRA_API_TOKEN="your-api-token-secret"
+export JIRA_MCP_PORT="9000" # Optional
+export JIRA_MCP_EPIC_LINK_FIELD_ID="customfield_10014" # Optional but needed for Epic endpoint
 ```
 
-Refer to `jira-mcp-server/config.yaml.example` for the structure of the optional configuration file. Remember that environment variables will always override values set in the file.
+## ▶️ Running the Server
 
-4.  **Run (inside `jira-mcp-server` directory):**
-    ```bash
-    make run
-    ```
-    Alternatively, run the compiled binary directly:
-    ```bash
-    ./jira-mcp-server
-    ```
-    The server will listen on the configured port (default: 8080).
+Ensure you are inside the `jira-mcp-server/` directory and have configured the required settings.
 
-### Running with Docker (inside `jira-mcp-server` directory)
+**Option 1: Run Directly (using Go)**
 
-1.  **Build the image (inside `jira-mcp-server` directory):**
+```bash
+# Ensure required JIRA_MCP_... environment variables are set
+make run
+# Or: go run ./cmd/main.go
+```
+The server will start listening on the configured port (default `8080`).
+
+**Option 2: Run with Docker**
+
+1.  **Build the Docker image:**
     ```bash
     make docker-build
     ```
-2.  **Create `.env` file:** Create a `.env` file *inside the `jira-mcp-server` directory* with your `JIRA_MCP_` environment variables (see [Configuration](#configuration)).
-3.  **Run using Docker (inside `jira-mcp-server` directory):**
+2.  **Create `.env` file:** Create a file named `.env` *inside the `jira-mcp-server/` directory* containing your `JIRA_MCP_` environment variables (one per line, e.g., `JIRA_MCP_JIRA_URL=...`).
+    ```dotenv
+    # .env file content example
+    JIRA_MCP_JIRA_URL=https://your-domain.atlassian.net
+    JIRA_MCP_JIRA_USER_EMAIL=your.email@example.com
+    JIRA_MCP_JIRA_API_TOKEN=your-api-token-secret
+    JIRA_MCP_PORT=8080 # Optional, ensure it matches docker-compose.yml mapping if changed
+    JIRA_MCP_EPIC_LINK_FIELD_ID=customfield_10014 # Optional
+    ```
+3.  **Run using Docker Compose:**
     ```bash
     make docker-run
+    # This command uses docker-compose up -d
     ```
-    This uses the `.env` file and maps the default port 8080.
-4.  **Run using Docker Compose (inside `jira-mcp-server` directory):**
-    ```bash
-    make docker-compose-up
-    ```
-    (Ensure your `.env` file is present). To stop: `make docker-compose-down`.
+    To stop the container: `docker-compose down`
 
-## Testing (run commands inside `jira-mcp-server` directory)
+## 🔌 API Endpoints
 
-The project includes both unit and integration tests.
+The server exposes the following primary endpoints:
 
-*   **Unit Tests:** Test individual functions and components in isolation, often using mocks (e.g., for the JIRA client). Run with:
+*   `POST /create_jira_issue`: Creates a new JIRA issue.
+*   `POST /search_jira_issues`: Searches for JIRA issues using JQL.
+*   `GET /jira_issue/{issueKey}`: Retrieves details for a specific JIRA issue.
+*   `GET /jira_epic/{epicKey}/issues`: Retrieves all issues belonging to a specific Epic (requires `JIRA_MCP_EPIC_LINK_FIELD_ID` configuration).
+
+## Example Requests & Responses
+
+For detailed request and response examples for each endpoint, please see:
+
+➡️ **[`API_EXAMPLES.md`](./API_EXAMPLES.md)**
+
+## ✅ Testing
+
+The project includes both unit and integration tests. Run these commands from the `jira-mcp-server/` directory:
+
+*   **Run Unit Tests:** Tests individual components in isolation (mocks JIRA API).
     ```bash
     make test
     ```
-*   **Integration Tests:** Test the interaction between components, including the HTTP API layer using `httptest` against a mock JIRA server. Run with:
+*   **Run Integration Tests:** Tests the HTTP API layer against a mock JIRA server.
     ```bash
     make test-integration
     ```
-
-**Test Coverage:**
-
-You can generate and view test coverage reports:
-
-*   Unit Test Coverage:
+*   **View Unit Test Coverage:** Generates `coverage.html` and opens it in your browser.
     ```bash
     make coverage
-    # This generates coverage.html. Open it in your browser.
     ```
-*   Integration Test Coverage:
+*   **View Integration Test Coverage:** Generates `coverage-integration.html` and opens it in your browser.
     ```bash
     make coverage-integration
-    # This generates coverage-integration.html. Open it in your browser.
     ```
 
+## 🏗️ Architecture
 
-## Architecture
+This server follows clean architecture principles, utilizing dependency injection (`wire`), structured logging (`slog`), and layered separation of concerns (handlers, JIRA client, core logic).
 
-For a detailed overview of the server's architecture, see the [Architecture Document](./jira-mcp-server/docs/architecture.md).
+For a more detailed explanation, please see the **[Architecture Document](./jira-mcp-server/docs/architecture.md)**.
 
+## 🤝 Contributing
 
-## API Endpoint
+Contributions are welcome and greatly appreciated! Whether it's reporting bugs, suggesting features, improving documentation, or submitting pull requests, your help makes this project better.
 
-- **POST /create_jira_issue**: Creates a new JIRA issue
-  - Required parameters:
-    - `project_key`: The JIRA project key (e.g., "PROJ")
-    - `summary`: The issue title
-    - `issue_type`: The type of issue (e.g., "Story", "Task", "Bug")
-  - Optional parameters:
-    - `description`: Detailed description
-    - `assignee_email`: Email of assignee
-    - `parent_key`: Key of parent issue (for sub-tasks)
+Please read our **[Contributing Guidelines](./CONTRIBUTING.md)** to get started.
 
-- **POST /search_jira_issues**: Searches for JIRA issues using JQL.
-  - Request Body (JSON):
-    - `jql` (string, required): The JIRA Query Language string.
-    - `max_results` (int, optional): Maximum number of issues to return.
-    - `fields` ([]string, optional): List of fields to return for each issue (e.g., `["summary", "status"]`). Defaults to a standard set if omitted.
-  - Example Success Response (JSON): `jira.SearchResponse` containing a list of issues matching the JQL.
+Also, please note that this project is released with a **[Contributor Code of Conduct](./CODE_OF_CONDUCT.md)**. By participating in this project you agree to abide by its terms.
 
-- **GET /jira_issue/{issueKey}**: Retrieves details for a specific JIRA issue.
-  - Path Parameter:
-    - `issueKey` (string, required): The key of the issue (e.g., "PROJ-123").
-  - Query Parameter:
-    - `fields` (string, optional): Comma-separated list of fields to return (e.g., `fields=summary,status,assignee`). Defaults to a standard set if omitted.
-  - Example Success Response (JSON): `jira.Issue` containing the details of the requested issue.
+## 📜 License
 
-- **GET /jira_epic/{epicKey}/issues**: Retrieves all issues belonging to a specific Epic.
-  - Path Parameter:
-    - `epicKey` (string, required): The key of the Epic issue (e.g., "PROJ-456").
-  - Example Success Response (JSON): `jira.SearchResponse` containing a list of issues linked to the specified Epic.
+This project is licensed under the MIT License. See the **[LICENSE](./jira-mcp-server/LICENSE)** file for details.
 
-## Example Request (/create_jira_issue)
+## ⚠️ Security Note
 
-```bash
-curl -X POST http://localhost:8080/create_jira_issue \
-  -H "Content-Type: application/json" \
-  -d '{
-    "project_key": "PROJ",
-    "summary": "Implement new feature",
-    "issue_type": "Story",
-    "description": "Detailed description here"
-  }'
-```
-
-## Example Response (/create_jira_issue)
-
-```json
-{
-  "message": "JIRA issue created successfully",
-  "key": "PROJ-123",
-  "url": "https://your-domain.atlassian.net/browse/PROJ-123"
-}
-```
-
-## Example Request (/search_jira_issues)
-
-```bash
-curl -X POST http://localhost:8080/search_jira_issues \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jql": "project = PROJ AND status = \"To Do\" ORDER BY created DESC",
-    "max_results": 5,
-    "fields": ["summary", "status", "assignee"]
-  }'
-```
-
-## Example Response (/search_jira_issues)
-
-```json
-{
-  "expand": "names,schema",
-  "startAt": 0,
-  "maxResults": 5,
-  "total": 2,
-  "issues": [
-    {
-      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
-      "id": "10001",
-      "self": "https://your-domain.atlassian.net/rest/api/3/issue/10001",
-      "key": "PROJ-124",
-      "fields": {
-        "summary": "Another task",
-        "status": {
-          "self": "https://your-domain.atlassian.net/rest/api/3/status/10000",
-          "description": "",
-          "iconUrl": "https://your-domain.atlassian.net/",
-          "name": "To Do",
-          "id": "10000",
-          "statusCategory": {
-            "self": "https://your-domain.atlassian.net/rest/api/3/statuscategory/2",
-            "id": 2,
-            "key": "new",
-            "colorName": "blue-gray",
-            "name": "To Do"
-          }
-        },
-        "assignee": null
-      }
-    },
-    {
-      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
-      "id": "10000",
-      "self": "https://your-domain.atlassian.net/rest/api/3/issue/10000",
-      "key": "PROJ-123",
-      "fields": {
-        "summary": "Implement new feature",
-        "status": {
-          "self": "https://your-domain.atlassian.net/rest/api/3/status/10000",
-          "description": "",
-          "iconUrl": "https://your-domain.atlassian.net/",
-          "name": "To Do",
-          "id": "10000",
-          "statusCategory": {
-            "self": "https://your-domain.atlassian.net/rest/api/3/statuscategory/2",
-            "id": 2,
-            "key": "new",
-            "colorName": "blue-gray",
-            "name": "To Do"
-          }
-        },
-        "assignee": null
-      }
-    }
-  ]
-}
-```
-
-## Example Request (/jira_issue/{issueKey})
-
-```bash
-curl -X GET "http://localhost:8080/jira_issue/PROJ-123?fields=summary,status,issuetype"
-```
-
-## Example Response (/jira_issue/{issueKey})
-
-```json
-{
-  "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
-  "id": "10000",
-  "self": "https://your-domain.atlassian.net/rest/api/3/issue/10000",
-  "key": "PROJ-123",
-  "fields": {
-    "summary": "Implement new feature",
-    "issuetype": {
-      "self": "https://your-domain.atlassian.net/rest/api/3/issuetype/10001",
-      "id": "10001",
-      "description": "A task that needs to be done.",
-      "iconUrl": "https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium",
-      "name": "Task",
-      "subtask": false,
-      "avatarId": 10318,
-      "entityId": "uuid-goes-here",
-      "hierarchyLevel": 0
-    },
-    "status": {
-      "self": "https://your-domain.atlassian.net/rest/api/3/status/10000",
-      "description": "",
-      "iconUrl": "https://your-domain.atlassian.net/",
-      "name": "To Do",
-      "id": "10000",
-      "statusCategory": {
-        "self": "https://your-domain.atlassian.net/rest/api/3/statuscategory/2",
-        "id": 2,
-        "key": "new",
-        "colorName": "blue-gray",
-        "name": "To Do"
-      }
-    }
-  }
-}
-```
-
-## Example Request (/jira_epic/{epicKey}/issues)
-
-```bash
-curl -X GET http://localhost:8080/jira_epic/PROJ-456/issues
-```
-
-## Example Response (/jira_epic/{epicKey}/issues)
-
-```json
-{
-  "expand": "names,schema",
-  "startAt": 0,
-  "maxResults": 50,
-  "total": 1,
-  "issues": [
-    {
-      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
-      "id": "10005",
-      "self": "https://your-domain.atlassian.net/rest/api/3/issue/10005",
-      "key": "PROJ-457",
-      "fields": {
-        "summary": "Story within the epic",
-        "status": {
-          "self": "https://your-domain.atlassian.net/rest/api/3/status/10001",
-          "description": "",
-          "iconUrl": "https://your-domain.atlassian.net/",
-          "name": "In Progress",
-          "id": "10001",
-          "statusCategory": {
-            "self": "https://your-domain.atlassian.net/rest/api/3/statuscategory/4",
-            "id": 4,
-            "key": "indeterminate",
-            "colorName": "yellow",
-            "name": "In Progress"
-          }
-        },
-        "issuetype": {
-           "self": "https://your-domain.atlassian.net/rest/api/3/issuetype/10002",
-           "id": "10002",
-           "description": "A user story.",
-           "iconUrl": "https://your-domain.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
-           "name": "Story",
-           "subtask": false,
-           "avatarId": 10315,
-           "hierarchyLevel": 0
-        }
-        // ... other fields ...
-      }
-    }
-    // ... potentially more issues ...
-  ]
-}
-```
-
-
-## Security Note
-
-Never commit your JIRA API token or other sensitive credentials to version control.
+**Never commit your JIRA API token or other sensitive credentials directly into your code or configuration files in version control.** Use environment variables or a secure secrets management system, especially for production deployments. Ensure your `.env` file (if used for Docker) is included in your `.gitignore`.

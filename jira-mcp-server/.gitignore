@@ -24,3 +24,6 @@ go.work
 vendor/
 # Optional: If not committing packages, otherwise can be removed
 /pkg/
+
+# Coverage output
+coverage*.out

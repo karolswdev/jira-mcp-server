@@ -35,6 +35,22 @@ jobs:
       working-directory: ./jira-mcp-server
       run: make test
 
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4 # Per instructions
+      # This step runs after tests. Default behavior is to run only if previous steps succeed.
+      # The token is essential for private repos or specific Codecov configurations.
+      # Ensure CODECOV_TOKEN secret is set in GitHub repo settings.
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        # Specify the directory where coverage files are located.
+        # The action will search for common coverage file names within this directory.
+        # Since 'make test' runs in './jira-mcp-server', coverage.out is there.
+        working-directory: ./jira-mcp-server
+        # Explicitly naming the file is also possible with the 'files' input:
+        # files: ./coverage.out # Path relative to working-directory
+        # fail_ci_if_error: true # Optional: uncomment to fail build on upload error
+        verbose: true # Optional: for debugging upload issues
+
     - name: Run Integration Tests
       working-directory: ./jira-mcp-server
       run: make test-integration
