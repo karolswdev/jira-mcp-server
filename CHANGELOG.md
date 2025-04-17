@@ -122,5 +122,5 @@
 
 
 <!-- Link Definitions -->
-[Unreleased]: https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/releases/tag/v0.1.0
+[Unreleased]: https://github.com/karolswdev/jira-mcp-server/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/karolswdev/jira-mcp-server/releases/tag/v0.1.0

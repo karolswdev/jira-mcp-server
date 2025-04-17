@@ -1,9 +1,9 @@
 # JIRA MCP Server 🚀
 
 <!-- Badges - TODO: Replace <USER>/<REPO> and add real token/links -->
-[![Go CI](https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/actions/workflows/ci.yml/badge.svg)](https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/actions/workflows/ci.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name])](https://goreportcard.com/report/github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name])
-[![codecov](https://codecov.io/gh/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/branch/main/graph/badge.svg)](https://codecov.io/gh/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]) <!-- Codecov token set via GitHub Secret: CODECOV_TOKEN -->
+[![Go CI](https://github.com/karolswdev/jira-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/karolswdev/jira-mcp-server/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/karolswdev/jira-mcp-server)](https://goreportcard.com/report/github.com/karolswdev/jira-mcp-server)
+[![codecov](https://codecov.io/gh/karolswdev/jira-mcp-server/branch/main/graph/badge.svg)](https://codecov.io/gh/karolswdev/jira-mcp-server) <!-- Codecov token set via GitHub Secret: CODECOV_TOKEN -->
 ![Go Version](https://img.shields.io/badge/go-1.20+-blue.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./jira-mcp-server/LICENSE)
 
@@ -34,8 +34,8 @@ This project provides a bridge between systems that speak the Model Context Prot
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name].git # TODO: Replace with actual URL
-    cd [TODO: Replace with GitHub Repo Name] # e.g., cd jira-mcp
+    git clone https://github.com/karolswdev/jira-mcp-server.git # TODO: Replace with actual URL
+    cd jira-mcp-server # e.g., cd jira-mcp
     ```
 2.  **Navigate to the server directory:**
     ```bash

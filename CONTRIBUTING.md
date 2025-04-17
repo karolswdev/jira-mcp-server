@@ -4,7 +4,7 @@ Thank you for considering contributing to the `jira-mcp-server` project! We welc
 
 ## Reporting Bugs
 
-If you encounter a bug, please help us fix it by submitting an issue to our [GitHub Issues page](https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/issues). <!-- TODO: Replace with actual link when available -->
+If you encounter a bug, please help us fix it by submitting an issue to our [GitHub Issues page](https://github.com/karolswdev/jira-mcp-server/issues). <!-- TODO: Replace with actual link when available -->
 
 When reporting a bug, please include the following details:
 
@@ -16,7 +16,7 @@ When reporting a bug, please include the following details:
 
 ## Suggesting Enhancements
 
-If you have an idea for a new feature or an improvement to an existing one, please submit an issue to our [GitHub Issues page](https://github.com/[TODO: Replace with GitHub Username]/[TODO: Replace with GitHub Repo Name]/issues). <!-- TODO: Replace with actual link when available -->
+If you have an idea for a new feature or an improvement to an existing one, please submit an issue to our [GitHub Issues page](https://github.com/karolswdev/jira-mcp-server/issues). <!-- TODO: Replace with actual link when available -->
 
 Clearly describe the enhancement:
 
