@@ -20,6 +20,10 @@
 - Added `coverage*.out` to `jira-mcp-server/.gitignore`.
 
 
+### Fixed
+- Updated Go version in `jira-mcp-server/Dockerfile` builder stage from `1.21-alpine` to `1.23-alpine` to match `go.mod` requirement (`go 1.23.1`).
+
+
 ### Removed
 - Removed redundant `.github/workflows/go-build.yml` workflow file.
 
@@ -104,6 +108,8 @@
 
 
 ### Fixed
+- Added `go install golang.org/x/tools/cmd/goimports@latest` step to `.github/workflows/ci.yml` to fix `make fmt` failure due to missing `goimports`.
+
 - Linting error (SA9003 empty branch) in `internal/jira/client.go` by removing unused `if req.AssigneeEmail != ""` block.
 - Integration test failures caused by JSON key mismatches (`projectKey` vs `project_key`), incorrect JQL assertions (quoting), incorrect response key assertions (`issueKey` vs `key`), and error handling/propagation issues.
 
